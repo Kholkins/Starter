@@ -141,7 +141,8 @@ public class MainActivity extends AppCompatActivity {
 
         carArrayList.remove(position);
 
-        carsAdapter.notifyDataSetChanged();
+        new DeleteCarAsyncTask().execute(car);
+
     }
 
     private void updateCar(String name, String price, int position) {
@@ -232,6 +233,13 @@ public class MainActivity extends AppCompatActivity {
             carsAppDatabase.getCarDAO().deleteCar(cars[0]);
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            carsAdapter.notifyDataSetChanged();
         }
     }
 }
