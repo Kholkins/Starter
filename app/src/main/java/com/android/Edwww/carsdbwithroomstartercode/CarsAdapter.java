@@ -1,4 +1,4 @@
-package com.android.uraall.carsdbwithroomstartercode;
+package com.android.Edwww.carsdbwithroomstartercode;
 
 import android.content.Context;
 import android.view.LayoutInflater;
