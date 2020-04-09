@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
+import Data.CarsAppDatabase;
 import Model.Car;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private CarsAdapter carsAdapter;
     private ArrayList<Car> cars = new ArrayList<>();
     private RecyclerView recyclerView;
-    private DatabaseHandler dbHandler;
+//    private DatabaseHandler dbHandler;
+    private CarsAppDatabase carsAppDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +38,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recyclerView);
-        dbHandler = new DatabaseHandler(this);
+//        dbHandler = new DatabaseHandler(this);
+        carsAppDatabase = Room.databaseBuilder(getApplicationContext(),CarsAppDatabase.class,"CarsDB")
+                .allowMainThreadQueries()
+                .build();
 
-        cars.addAll(dbHandler.getAllCars());
+
 
         carsAdapter = new CarsAdapter(this, cars, MainActivity.this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -133,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     private void deleteCar(Car car, int position) {
 
         cars.remove(position);
-        dbHandler.deleteCar(car);
+        carsAppDatabase.getCarDAO().deleteCar(car);
         carsAdapter.notifyDataSetChanged();
     }
 
@@ -144,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
         car.setName(name);
         car.setPrice(price);
 
-        dbHandler.updateCar(car);
+        carsAppDatabase.getCarDAO().updateCar(car);
 
         cars.set(position, car);
 
@@ -155,10 +162,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void createCar(String name, String price) {
 
-        long id = dbHandler.insertCar(name, price);
+        long id = carsAppDatabase.getCarDAO().addCar(new Car(0,name, price));
 
 
-        Car car = dbHandler.getCar(id);
+        Car car = carsAppDatabase.getCarDAO().getCar(id);
 
         if (car != null) {
 
@@ -167,5 +174,19 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    private class GetAllCarsAsyncTask extends AsyncTask<Void,Void,Void >{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            cars.addAll(carsAppDatabase.getCarDAO().getAllCars());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
     }
 }
