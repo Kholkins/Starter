@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
 //        dbHandler = new DatabaseHandler(this);
         carsAppDatabase = Room.databaseBuilder(getApplicationContext(),CarsAppDatabase.class,"CarsDB")
-                .allowMainThreadQueries()
                 .build();
 
         new GetAllCarsAsyncTask().execute();
