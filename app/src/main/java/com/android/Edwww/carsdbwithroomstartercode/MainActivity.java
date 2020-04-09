@@ -19,7 +19,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-import Data.DatabaseHandler;
 import Model.Car;
 
 public class MainActivity extends AppCompatActivity {
