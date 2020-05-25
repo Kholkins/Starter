@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
 
 //    private DatabaseHandler dbHandler;
+
     private CarsAppDatabase carsAppDatabase;
 
     @Override
