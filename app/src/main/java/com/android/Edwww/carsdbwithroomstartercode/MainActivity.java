@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private CarsAdapter carsAdapter;
     private ArrayList<Car> carArrayList = new ArrayList<>();
     private RecyclerView recyclerView;
+
 //    private DatabaseHandler dbHandler;
     private CarsAppDatabase carsAppDatabase;
 
