@@ -18,6 +18,8 @@ public class CarsAdapter extends RecyclerView.Adapter<CarsAdapter.MyViewHolder> 
     private ArrayList<Car> cars;
     private MainActivity mainActivity;
 
+    //123
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView nameTextView;
